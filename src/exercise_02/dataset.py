@@ -30,7 +30,7 @@ class NoisyRegressionDataset(Dataset):
         ax = sns.scatterplot(self.df, x="x", y="y")
         ax.set_title("Synthetic noisy data of y=-3*x^2+5*x")
         plt.savefig(filepath)
-        plt.show()
+        plt.show(block=False)
 
     def __len__(self):
         return len(self.x)
