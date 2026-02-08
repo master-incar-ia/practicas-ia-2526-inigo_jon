@@ -69,7 +69,7 @@ def train_model(output_folder: Path, device: torch.device):
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
     # Training loop with validation and saving best weights
-    num_epochs = 60
+    num_epochs = 100
     best_val_loss = float("inf")
     best_model_path = output_folder / "best_model.pth"
 

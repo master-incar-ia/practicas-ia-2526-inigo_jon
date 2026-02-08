@@ -23,12 +23,15 @@ class NoisyRegressionDataset(Dataset):
         # Reshape for PyTorch compatibility
         self.x = self.x.reshape((-1, 1))
         self.y = self.y.reshape((-1, 1))
+        
+        # Preserve a copy of the raw (unnormalized) inputs for later denormalization
+        self.x_raw = self.x.copy()
 
     def plot(self, filepath):
         ax = sns.scatterplot(self.df, x="x", y="y")
         ax.set_title("Synthetic noisy data of y=5*x+2")
         plt.savefig(filepath)
-        plt.show()
+        plt.show(block=False)
 
     def __len__(self):
         return len(self.x)
@@ -37,6 +40,16 @@ class NoisyRegressionDataset(Dataset):
         return torch.tensor(self.x[idx], dtype=torch.float32), torch.tensor(
             self.y[idx], dtype=torch.float32
         )
+    def denormalize_x(self, x_array: np.ndarray) -> np.ndarray:
+        """If the dataset has been normalized, convert x_array back to original scale.
+
+        x_array can be a numpy array of shape (N,1) or (N,).
+        """
+        # If no normalization parameters are present, return input unchanged
+        if not hasattr(self, "x_mean") or not hasattr(self, "x_std"):
+            return x_array
+        return x_array * float(self.x_std) + float(self.x_mean)
+
 
 
 if __name__ == "__main__":
