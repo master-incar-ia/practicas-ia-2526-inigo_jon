@@ -72,7 +72,7 @@ Se selecciona **MSELoss** porque:
 **Opciones exploradas:**
 
 1. **MLP pequeña (1 capa):** `input(1) → hidden(8) → output(1)`. Riesgo de subajuste.
-2. **MLP media (3 capas):** `input(1) → hidden(16) → hidden(16) → hidden(16) → output(1)`. **Seleccionada por defecto.**
+2. **MLP media (3 capas):** `input(1) → hidden(16) → hidden(16) → hidden(16) → output(1)`. **Seleccionada como más adecuada.**
 3. **MLP profunda (5+ capas):** Más capacidad pero riesgo de overfitting.
 4. **Variaciones:** cambiar `hidden_dim` a 32, 64 o añadir Dropout/BatchNorm.
 
