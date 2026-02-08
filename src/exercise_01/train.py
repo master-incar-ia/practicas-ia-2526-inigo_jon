@@ -113,8 +113,7 @@ def train_model(output_folder: Path, device: torch.device):
 
     # Save the plot to the outs/ folder
     plt.savefig(output_folder / "loss_plot.png")
-    plt.savefig(output_folder / "loss_plot.png")
-
+    
 if __name__ == "__main__":
     # Create output folder based on file folder
     output_folder = Path(__file__).parent.parent.parent / "outs" / Path(__file__).parent.name  
