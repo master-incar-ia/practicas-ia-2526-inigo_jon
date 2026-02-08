@@ -61,7 +61,26 @@ def evaluate_and_plot(loader,model, dataset_name, output_folder):
     # Plot the data points
     plt.figure(figsize=(10, 6))
     sns.scatterplot(data=df, x="x", y="y_true", label="True")
-    sns.scatterplot(data=df, x="x", y="y_pred", label="Predicted")
+    sns.scatterplot(data=df, x="x", y="y_pred", label="Predicted (points)", alpha=0.6)
+    
+    # Generate continuous prediction line
+    x_min, x_max = all_inputs.min(), all_inputs.max()
+    x_line = np.linspace(x_min, x_max, 100)
+    x_line_tensor = torch.tensor(x_line.reshape(-1, 1), dtype=torch.float32)
+    
+    with torch.no_grad():
+        y_line = model(x_line_tensor).numpy().flatten()
+    
+    # Extract model coefficients
+    weight = model.fc.weight.item()
+    bias = model.fc.bias.item()
+    
+    # Format equation
+    equation = f"y_pred = {weight:.4f}*x + {bias:.4f}"
+    
+    # Plot the prediction line
+    plt.plot(x_line, y_line, label=equation, linewidth=2, color='red')
+    
     plt.xlabel("x")
     plt.ylabel("y")  # Adding y label
     plt.title(f"Data points for {dataset_name} dataset")
