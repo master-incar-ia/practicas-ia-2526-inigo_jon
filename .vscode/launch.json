@@ -19,46 +19,46 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_02.dataset",
+            "name": "exercise_05.dataset",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.exercise_02.dataset",
+            "module": "src.exercise_05.dataset",
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_02.train",
+            "name": "exercise_05.train",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.exercise_02.train",
+            "module": "src.exercise_05.train",
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_02.model",
+            "name": "exercise_05.model",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.exercise_02.model",
+            "module": "src.exercise_05.model",
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_02.evaluate",
+            "name": "exercise_05.evaluate",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.exercise_02.evaluate",
+            "module": "src.exercise_05.evaluate",
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_02: Full Pipeline Script",
+            "name": "exercise_05: Full Pipeline Script",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/src/exercise_02/run_pipeline.py",
+            "program": "${workspaceFolder}/src/exercise_05/run_pipeline.py",
             "console": "integratedTerminal"
         }
     ],
     "compounds": [
         {
-            "name": "exercise_02: Full Pipeline (Sequential)",
+            "name": "exercise_05: Full Pipeline (Sequential)",
             "configurations": [
-                "exercise_02: Full Pipeline Script"
+                "exercise_05: Full Pipeline Script"
             ]
         }
     ]
