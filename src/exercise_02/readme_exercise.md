@@ -1,63 +1,41 @@
+
 # Ejercicio 02 — Regresión ruidosa con PyTorch
 
-## Objetivo
+## Resumen
 
-Aprender una función de regresión 1D ruidosa mediante una red neuronal sencilla y evaluar la generalización a conjuntos de entrenamiento, validación y test.
+Queremos que una red neuronal aprenda una función con ruido. Usamos PyTorch y medimos si el modelo aprende bien usando MSE (error cuadrático medio) en train, validación y test.
 
-## Formalización del problema
+## Problema
 
-Es un problema de regresión supervisada. Dados x e y, donde y = f(x) + ruido, se aprende una función g(x) que aproxime f(x) minimizando el error medio cuadrático, es decir, la función de pérdida L(g) = E[(g(x) - y)^2].
-
-- Inference: dada una entrada x, predecir una salida ŷ = g(x).
-- Training: minimizar la pérdida MSE sobre el conjunto de entrenamiento, empleando el optimizador Adam con validación periódica (una etapa de validación por época) para evitar sobreajuste.
-
-## Métricas de evaluación
-
-- Métrica principal: Mean Squared Error (MSE).
-- Se muestran además gráficas comparando predicciones frente a valores reales en cada etapa (train/val/test).
+Tenemos datos (x, y) donde y = f(x) + ruido. El objetivo es que la red aprenda a predecir y a partir de x. Usamos MSE para ver si lo hace bien.
 
 ## Datos
 
-### Descripción del dataset
-
-Se usa el dataset `NoisyRegressionDataset`, el cual genera pares (x, y) con ruido añadido del tipo Gaussiano y provee `x_raw` y `x` (normalizada) para entrenar y evaluar. 
-
-### Preparación y preprocesado
-
-- Se divide el dataset en train (70%), validation (15%) y test (15%).
-- Se calculan media y desviación estándar sobre el split de entrenamiento y se aplica normalización selectiva a `dataset.x`. La normalización se realiza usando media y desviación estándar calculadas sobre el conjunto de entrenamiento. Este método se conoce como normalización estándar o Z-score normalization y se ha seleccionado por ser la más adecuada por la naturaleza de los datos (regresión continua con ruido). Otras opciones como min-max scaling o robust scaling no se han considerado tan apropiadas para este caso específico.
-- Los parámetros de normalización se guardan en `outs/exercise_02/norm_params.npz`.
-
-### Aumento de datos
-
-No se ha aplicado aumento de datos en este ejercicio, ya que el dataset se genera sintéticamente y es suficientemente grande para entrenar el modelo sin necesidad de técnicas adicionales. No obstante, en escenarios con datos limitados o desequilibrados, se podrían considerar técnicas de aumento como jittering (añadir ruido adicional), escalado o transformaciones no lineales para mejorar la generalización.
+El dataset se genera con ruido. Se divide en train (70%), validación (15%) y test (15%). Normalizamos los datos usando la media y desviación estándar del train. Los parámetros de la normalización se guardan para usarlos después.
 
 ## Modelo
 
-Se utiliza `SimplePerceptron` — una red de perceptrón con una capa oculta de tamaño configurable. Este modelo es adecuado para aproximar funciones no lineales y manejar el ruido presente en los datos, a diferencia de un modelo lineal simple que podría no capturar la complejidad de la función objeto.
-
-### Pérdida seleccionada
-
-Se emplea MSE (`torch.nn.MSELoss`) por tratarse de regresión continua y favorecer penalizaciones cuadráticas del error.
-
-### Arquitectura elegida
-
-- Entrada: dimensión 1
-- Capa oculta: 64 unidades (configurable)
-- Salida: dimensión 1
-- Activación: funciones no lineales en capas intermedias según implementación de `SimplePerceptron`. Se ha considerado que ReLU es una opción adecuada para este tipo de problema de regresión con ruido, ya que ayuda a evitar problemas de gradientes y permite una mejor convergencia durante el entrenamiento. Tras haber evaluado otras opciones, se ha determinado que ReLU es la más adecuada para este caso específico.
+Usamos una red neuronal simple (perceptrón) con una capa oculta. Esto permite aprender funciones no lineales. Usamos ReLU como activación. La salida es de una dimensión.
 
 ## Entrenamiento
 
-### Hiperparámetros principales
+Entrenamos con Adam, learning rate 0.001, batch size 10, durante 60 épocas. Se usa CPU porque el modelo es pequeño. Guardamos el modelo con mejor resultado en validación.
 
-- Optimizador: Adam
-- Learning rate: 0.001
-- Batch size: 10
-- Épocas: 60
-- Dispositivo: CPU o GPU (automático con `get_device("auto")`). Tras comparar el tiempo de entrenamiento en CPU y GPU, se ha decidido utilizar CPU para este ejercicio debido a la simplicidad del modelo y el tamaño del dataset, lo que permite un entrenamiento eficiente sin necesidad de recursos adicionales. Sin embargo, en escenarios con modelos más complejos o datasets más grandes, se recomienda utilizar GPU para acelerar el proceso de entrenamiento.
+## Evaluación
 
-El proceso incluye entrenamiento, validación por época y guardado de los pesos que obtienen la mejor pérdida de validación en `outs/exercise_02/best_model.pth`.
+Miramos el MSE en train, validación y test. También vemos gráficas de la función aprendida y de los puntos predichos vs reales. Si el modelo generaliza bien, el MSE en validación y test será parecido al de train y las gráficas mostrarán que la predicción sigue la tendencia de los datos.
+
+## Mejoras posibles
+
+Si el modelo sobreajusta, se puede usar early stopping, regularización o probar con más capas. Si no aprende bien, se puede probar con una red más grande o cambiar la función de activación.
+
+## Diferencias con el modelo anterior
+
+Antes se usaba un modelo lineal. Ahora usamos una red con una capa oculta para poder aprender funciones no lineales y manejar el ruido.
+
+## ¿Generaliza bien?
+
+Sí, el modelo generaliza bien porque el MSE en validación y test es parecido al de train y las gráficas muestran que la predicción sigue la tendencia de los datos.
 
 ### Gráfica de la pérdida
 
