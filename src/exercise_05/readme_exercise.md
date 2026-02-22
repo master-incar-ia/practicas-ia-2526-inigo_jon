@@ -3,199 +3,102 @@
 
 ## Objetivo
 
-Desarrollar un modelo de red neuronal completamente conectada (MLP) para clasificación de imágenes en CIFAR-10. Evaluar el rendimiento del modelo calculando métricas de clasificación e incluyendo una matriz de confusión. Analizar comparativamente con ejercicios anteriores, especialmente el efecto de la augmentación de datos cuando se usa una arquitectura diferente (MLP vs CNN).
+En este ejercicio se desarrolla una red neuronal completamente conectada (MLP) para clasificar imágenes del dataset CIFAR-10. El objetivo es ver cómo funciona este tipo de arquitectura y comparar su rendimiento con ejercicios anteriores, especialmente el efecto de la augmentación de datos frente a una CNN.
 
 ## Formalización de la Tarea
 
 ### Formalización de la Tarea (Inferencia)
 
-Dada una imagen de entrada de 32x32 píxeles en RGB, aplanarla a un vector de 3072 características (3 canales × 32 × 32) y clasificarla en una de las 10 clases de CIFAR-10 mediante una red completamente conectada. El modelo predice probabilidades para cada clase y selecciona la clase con mayor probabilidad.
+El modelo recibe imágenes de 32x32 píxeles en color, las aplana a un vector de 3072 valores y trata de clasificarlas en una de las 10 clases posibles. Al final, predice la probabilidad de cada clase y escoge la más alta.
 
 ### Formalización de la Tarea (Entrenamiento)
 
-Entrenar una MLP con datos etiquetados del conjunto de entrenamiento de CIFAR-10 (50,000 imágenes) mediante optimización Adam. El objetivo es minimizar la función de pérdida CrossEntropyLoss, validando continuamente con el conjunto de validación (15% de los datos de entrenamiento) y guardando el mejor modelo según la pérdida de validación.
+Entrenamos la MLP con datos etiquetados de CIFAR-10 usando Adam y CrossEntropyLoss. Validamos el modelo con un conjunto aparte y guardamos el mejor resultado según la pérdida de validación.
 
 ## Métricas de Evaluación
 
-Las métricas utilizadas para evaluar el rendimiento del modelo son:
-- **Exactitud (Accuracy)**: Porcentaje de predicciones correctas
-- **Precisión (Precision)**: Proporción de predicciones positivas correctas (promedio ponderado)
-- **Exhaustividad (Recall)**: Proporción de instancias positivas correctamente identificadas (promedio ponderado)
-- **F1-Score**: Media armónica entre precisión y exhaustividad (promedio ponderado)
+Para evaluar el modelo usamos la exactitud, precisión, recall y F1-score. Así comprobamos si acierta y si lo hace de forma equilibrada entre clases.
 
 ## Consideraciones sobre los Datos
 
 ### Descripción del dataset
 
-El dataset CIFAR-10 contiene 60,000 imágenes en color de 32x32 píxeles distribuidas en 10 clases con 6,000 imágenes por clase:
-- **Clases**: avión, automóvil, pájaro, gato, ciervo, perro, rana, caballo, barco, camión
-- **Conjunto de entrenamiento**: 50,000 imágenes
-- **Conjunto de prueba**: 10,000 imágenes
-- **Tamaño de imagen**: 32x32 píxeles, 3 canales (RGB)
-
-Los datos se dividieron en:
-- 85% para entrenamiento: 42,500 imágenes
-- 15% para validación: 7,500 imágenes
-- 100% del conjunto original para prueba: 10,000 imágenes
-Consideraciones del Modelo
+El dataset CIFAR-10 tiene 60,000 imágenes pequeñas y coloridas de 10 tipos de objetos. Usamos la mayoría para entrenar, una parte para validar y el resto para probar el modelo. Así vemos si la red aprende y si es capaz de acertar con imágenes nuevas.
 
 ### Funciones de Pérdida Adecuadas
 
-Para un problema de clasificación multiclase como CIFAR-10, las opciones son:
-- **CrossEntropyLoss**: Estándar para clasificación multiclase
-- **Focal Loss**: Cuando hay desbalance de clases
-- **Label Smoothing**: Para reducir sobrefitting
+Para este tipo de problema, la función de pérdida más habitual es CrossEntropyLoss. También existen otras como Focal Loss o Label Smoothing, pero aquí usamos la estándar.
 
 ### Función de Pérdida Seleccionada
 
-Se seleccionó **CrossEntropyLoss** como función estándar para clasificación multiclase en PyTorch.
+Usamos CrossEntropyLoss porque es la opción más común para clasificación multiclase en PyTorch.
 
 ### Arquitecturas Posibles
 
-Se consideraron dos enfoques principales:
-- **Red neuronal completamente conectada (MLP)**: Simple pero menos eficiente para imágenes, muchos parámetros
-- **Red convolucional (CNN)**: Extrae características espaciales, más eficiente con menos parámetros
-
-Este ejercicio construye una **MLP** para demostrar las limitaciones de las arquitecturas completamente conectadas en visión por computadora.
+Se pueden usar una MLP o una CNN. La MLP es sencilla pero menos eficiente para imágenes y tiene muchos parámetros. La CNN extrae mejor las características espaciales y suele funcionar mejor. Este ejercicio usa una MLP para mostrar sus limitaciones en visión por computadora.
 
 ### Arquitectura Seleccionada (MLPClassifier)
 
 **Arquitectura**:
-- Entrada: 3072 características (aplanadas de 3×32×32)
-- Capas ocultas: 512 → 256 → 128
-- Salida: 10 neuronas (clasificación multiclase)
 
-**Detalles**:
-- Activación: ReLU en todas las capas ocultas
-- Dropout: Disponible pero comentado (0.5)
-- Capas: 4 capas lineales totales (3 ocultas + 1 salida)
-- Parámetros totales: ≈ 1.9M
+La arquitectura elegida es una MLP con tres capas ocultas (512, 256 y 128 neuronas) y una capa de salida para las 10 clases. Usamos ReLU como activación y dropout está disponible pero no activado. El modelo tiene muchos parámetros, lo que lo hace propenso a problemas de ajuste.
 
 ### Activación de la Última Capa
 
-No hay activación explícita en la última capa. Se devuelven los **logits** directamente, ya que CrossEntropyLoss espera logits sin aplicar softmax previamente.
+No hay activación en la última capa porque la función de pérdida ya se encarga de eso.
 
 ### Otras Consideraciones
 
-- **Arquitectura completamente conectada**: Ignora la estructura espacial de las imágenes
-- **Alto número de parámetros**: Propicio a overfitting
-- **Optimizador**: Adam con lr=0.001
-- *Entrenamiento
+La arquitectura completamente conectada ignora la estructura espacial de las imágenes y tiene muchos parámetros, lo que puede llevar a problemas de ajuste. Usamos Adam como optimizador.
 
 ### Hiperparámetros de Entrenamiento
 
-| Hiperparámetro | Valor |
-|---|---|
-| Algoritmo de optimización | Adam |
-| Tasa de aprendizaje inicial | 0.001 |
-| Tamaño de batch | 64 |
-| Número de épocas | 100 |
-| Función de pérdida | CrossEntropyLoss |
-| Capas ocultas | [512, 256, 128] |
-| Planificador de tasa de aprendizaje | Ninguno (fijo) |
-| Estrategia de regularización | Dropout (comentado) |
+Usamos Adam, batch de 64, 100 épocas y tasa de aprendizaje 0.001. No complicamos mucho la configuración para centrarnos en entender el proceso.
 
 ### Gráfico de la función de pérdida
-ción
+
+
+La gráfica de la pérdida nos ayuda a ver cómo evoluciona el aprendizaje del modelo. En este caso, tanto la pérdida de entrenamiento como la de validación bajan al principio, pero pronto se estabilizan en valores altos. No hay una diferencia grande entre ambas, lo que nos dice que el modelo no está sobreajustando, sino que está subajustando: no es capaz de aprender bien ni siquiera los datos de entrenamiento. Esto suele pasar cuando usamos una MLP para imágenes, porque se pierden las relaciones espaciales entre píxeles.
+
+![Gráfica de la función de pérdida](../../outs/exercise_05/loss_plot.png)
 
 ### Métricas de Evaluación
 
-Las métricas obtenidas en los tres conjuntos de datos son:
+Las métricas muestran que el modelo tiene una exactitud de alrededor del 55% en entrenamiento y validación, y baja al 51% en test. La precisión, recall y F1-score siguen valores similares. Esto indica que el modelo no aprende bien y apenas supera la adivinación aleatoria.
 
-| Métrica | Entrenamiento | Validación | Prueba |
-|---|---|---|---|
-| **Exactitud (Accuracy)** | 54.96% | 55.52% | 51.67% |
-| **Precisión (Precision)** | 56.46% | 57.38% | 52.80% |
-| **Exhaustividad (Recall)** | 54.96% | 55.52% | 51.67% |
-| **F1-Score** | 54.25% | 55.02% | 51.00% |
-
-![image](../../outs/exercise_05/metrics.png)
+![Resumen de métricas](../../outs/exercise_05/metrics.png)
 
 ### Resultados de la Evaluación
 
-**Matriz de confusión en conjunto de entrenamiento:**
-![image](../../outs/exercise_05/train_confusion_matrix.png)
 
-**Matriz de confusión en conjunto de validación:**
-![image](../../outs/exercise_05/validation_confusion_matrix.png)
 
-**Matriz de confusión en conjunto de prueba:**
-![image](../../outs/exercise_05/test_confusion_matrix.png)
+Las matrices de confusión nos permiten ver de forma visual cómo el modelo acierta o falla en cada clase, tanto en entrenamiento, validación como en test. En todas ellas se observa que hay muchos errores y que el modelo no consigue distinguir bien las clases. Esto confirma que la arquitectura MLP no es adecuada para este tipo de datos y que el modelo no generaliza bien.
 
+Entrenamiento:
+
+![Matriz de confusión entrenamiento](../../outs/exercise_05/train_confusion_matrix.png)
+
+Validación:
+
+![Matriz de confusión validación](../../outs/exercise_05/validation_confusion_matrix.png)
+
+Test:
+
+![Matriz de confusión test](../../outs/exercise_05/test_confusion_matrix.png)
 ### Discusión de los Resultados
 
-**¿Cómo el modelo resuelve el problema?**
 
-La MLP intenta aprender a clasificar imágenes aplanas tratando cada píxel como independiente. Sin embargo, al aplanar la imagen de 32×32 a 3072 características, se pierden las relaciones espaciales entre píxeles. La red aprende correlaciones globales débiles entre píxeles dispersos, lo que resulta en predicciones pobres (apenas mejor que aleatoria: 10% base).
+La MLP trata cada píxel como independiente, por lo que pierde las relaciones espaciales entre ellos. El modelo aprende muy poco y obtiene resultados apenas mejores que la adivinación aleatoria.
 
-**¿Existe overfitting, underfitting u otros problemas?**
+Las CNNs capturan mejor estas relaciones espaciales con menos parámetros, por eso funcionan mucho mejor para imágenes. La arquitectura MLP no es adecuada para visión por computadora.
 
-El modelo muestra varios problemas críticos:
-- **Rendimiento deficiente global**: 54.96% en entrenamiento, muy cerca de lo aleatorio (10%)
-- **Gap validación-prueba pequeño**: 55.52% vs 51.67%, solo 3.85%, indicando estabilidad
-- **Underfitting**: El modelo no está aprendiendo suficientemente bien ni en entrenamiento
-- **Arquitectura inadecuada**: La MLP es inapropiada para datos de imagen
-
-El problema principal no es overfitting sino que la arquitectura **no puede extraer características relevantes** de imágenes.
-
-**¿Bucles de Retroalimentación en el Diseño
-
-**Análisis comparativo de arquitecturas:**
-
-| Iteración | Arquitectura | Exactitud (Train) | Exactitud (Prueba) | Observaciones |
-|---|---|---|---|---|
-| 1 | MLP (3072→512→256→128→10) | 54.96% | 51.67% | Rendimiento pobre, arquitectura inadecuada |
-| 4 | SimpleCNN (Conv3×3 layers) | 89.76% | 82.15% | Mejora masiva: +34.8% en train, +30.5% en test |
-
-La comparación es evidente: la CNN supera a la MLP por un margen enorme debido a que:
-- La CNN respeta la estructura espacial de las imágenes
-- La CNN comparte pesos reduciendo parámetros
-- La CNN aprende jerarquías de características
-
-No se implementaron mejoras iterativas a la MLP porque la limitación es fundamental a la arquitectura, no a hiperparámetros.
 
 ## Preguntas
 
 ### ¿Cuáles son las diferencias encontradas entre el modelo anterior (Ejercicio 4) y este (Ejercicio 5)?
 
-**Análisis de cambios principales:**
-
-| Aspecto | Ejercicio 4 (CNN) | Ejercicio 5 (MLP) |
-|---|---|---|
-| **Arquitectura** | 3 capas convolucionales | Red completamente conectada |
-| **Respeto a estructura espacial** | Sí (kernels deslizantes) | No (aplanamiento) |
-| **Número de parámetros** | ≈ 186K | ≈ 1.9M |
-| **Compartición de pesos** | Sí (kernels compartidos) | No (pesos únicos) |
-| **Exactitud en prueba** | **82.15%** | **51.67%** |
-| **Gap Validación-Prueba** | 7.74% | 3.85% |
-
-**Conclusiones principales:**
-
-1. **Arquitectura apropiada es crítica**: La CNN obtiene un rendimiento ~ 30.5% mejor solo por usar la arquitectura correcta
-2. **La augmentación de datos tiene efecto limitado en MLP**: Incluso con augmentación, la MLP no puede competir con CNN
-3. **Eficiencia**: La CNN usa ~ 10× menos parámetros pero obtiene resultados 10× mejores
-4. **Importancia de inducción de sesgo**: Las redes deben incorporar conocimiento del dominio (estructura espacial)
+En comparación con el ejercicio anterior, donde usamos una CNN, la diferencia es clara. La CNN respeta la estructura espacial de las imágenes, tiene menos parámetros y obtiene resultados mucho mejores. La MLP ignora esa estructura, tiene muchos más parámetros y su rendimiento es muy inferior, incluso usando augmentación de datos.
 
 ### ¿Generaliza bien el modelo a nuevos datos?
 
-**Respuesta: No, el modelo no generaliza bien.**
-
-**Análisis:**
-
-1. **Rendimiento absoluto bajo**: Con 51.67% de exactitud, el modelo apenas supera la adivinación aleatoria (10%)
-2. **Gap pequeño pero rendimiento pobre**: Aunque la diferencia entre validación (55.52%) y prueba (51.67%) es pequeña (3.85%), el rendimiento absoluto es insuficiente
-3. **Extrapolación a nuevos datos**: Para imágenes nuevas que sigan CIFAR-10:
-   - Rendimiento esperado: ~50-52% (consistente con prueba actual)
-   - Inutilizable en práctica (necesitaría >80% para aplicaciones reales)
-
-4. **Dominios diferentes**: Para imágenes de dominios completamente diferentes:
-   - El rendimiento sería aún peor
-   - La arquitectura no aprendería características transferibles
-
-**Conclusión concluyente**: Este modelo demuestra por qué **las redes convolucionales fueron un avance revolucionario** en visión por computadora. La arquitectura MLP es fundamentalmente inapropiada para este dominio, y ninguna cantidad de tuning de hiperparámetros podría compensar esta limitación arquitectónica._plot.png)
-
-
-
-
-
-
+En cuanto a la generalización, el modelo no generaliza bien. La exactitud en test es baja y apenas supera la adivinación aleatoria. Aunque el gap entre validación y test es pequeño, el rendimiento absoluto es insuficiente. Para imágenes nuevas, el modelo seguiría teniendo resultados pobres y no sería útil en la práctica. Esto muestra por qué las redes convolucionales son tan importantes en visión por computadora: la arquitectura MLP no es adecuada para este tipo de datos y no puede aprender características relevantes.
