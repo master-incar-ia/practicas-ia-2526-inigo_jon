@@ -19,46 +19,53 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_04.dataset",
+            "name": "exercise_06.dataset",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.exercise_04.dataset",
+            "module": "src.exercise_06.dataset",
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_04.train",
+            "name": "exercise_06.trainMLP",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.exercise_04.train",
+            "module": "src.exercise_06.trainMLP",
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_04.model",
+            "name": "exercise_06.trainCNN",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.exercise_04.model",
+            "module": "src.exercise_06.trainCNN",
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_04.evaluate",
+            "name": "exercise_06.model",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.exercise_04.evaluate",
+            "module": "src.exercise_06.model",
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_04: Full Pipeline Script",
+            "name": "exercise_06.evaluate",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/src/exercise_04/run_pipeline.py",
+            "module": "src.exercise_06.evaluate",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "exercise_06: Full Pipeline Script",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/exercise_06/run_pipeline.py",
             "console": "integratedTerminal"
         }
     ],
     "compounds": [
         {
-            "name": "exercise_04: Full Pipeline (Sequential)",
+            "name": "exercise_06: Full Pipeline (Sequential)",
             "configurations": [
-                "exercise_04: Full Pipeline Script"
+                "exercise_06: Full Pipeline Script"
             ]
         }
     ]
