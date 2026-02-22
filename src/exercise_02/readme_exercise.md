@@ -51,39 +51,33 @@ El entrenamiento está bien controlado: cada 10 épocas se imprime la pérdida d
 
 ### Resultados y visualizaciones
 
-Se incluyen las siguientes imágenes en `outs/exercise_02`:
+A continuación se muestran las imágenes generadas durante el ejercicio, cada una comentada para entender su utilidad:
 
-- `train_regression_plot.png`, `validation_regression_plot.png`, `test_regression_plot.png`: comparación de la función aprendida frente a datos reales por partición.
-- `train_data_points_plot.png`, `validation_data_points_plot.png`, `test_data_points_plot.png`: puntos reales vs predichos.
-- `metrics.png`: resumen de métricas (MSE) por partición.
+**Gráfica de la pérdida:**
+Esta imagen muestra cómo la pérdida (error) va bajando durante el entrenamiento y la validación. Si ambas curvas bajan y se mantienen cercanas, el modelo está aprendiendo y generalizando bien. Si la pérdida de validación subiera mientras la de entrenamiento baja, sería señal de sobreajuste.
+![loss](../../outs/exercise_02/loss_plot.png)
 
-### Gráficas de regresión
+**Gráficas de regresión:**
+Estas gráficas muestran la función aprendida por el modelo (línea azul) frente a los puntos reales (naranja) en cada partición:
+ - Entrenamiento: ![train](../../outs/exercise_02/train_regression_plot.png)
+	 Aquí vemos que el modelo ajusta bien la tendencia de los datos de entrenamiento.
+ - Validación: ![validation](../../outs/exercise_02/validation_regression_plot.png)
+	 En validación, la función aprendida sigue la tendencia de los datos no vistos, lo que indica buena generalización.
+ - Test: ![test](../../outs/exercise_02/test_regression_plot.png)
+	 En test, el modelo sigue la tendencia de los datos nuevos, confirmando que generaliza correctamente.
 
-![train](../../outs/exercise_02/train_regression_plot.png)
+**Comparación de predicciones vs valores reales:**
+Estas imágenes muestran cómo de cerca están las predicciones del modelo respecto a los valores reales. Los puntos cerca de la diagonal indican buena precisión:
+ - Entrenamiento: ![train_points](../../outs/exercise_02/train_data_points_plot.png)
+	 Los puntos están cerca de la diagonal, lo que indica que el modelo predice bien en entrenamiento.
+ - Validación: ![validation_points](../../outs/exercise_02/validation_data_points_plot.png)
+	 En validación, la distribución de puntos alrededor de la diagonal confirma que el modelo generaliza correctamente.
+ - Test: ![test_points](../../outs/exercise_02/test_data_points_plot.png)
+	 En test, la concentración de puntos en la diagonal indica que el modelo realiza predicciones fiables en datos completamente nuevos.
 
-En la primera gráfica se muestra la función aprendida (línea azul) frente a los puntos reales (puntos naranjas) en el conjunto de entrenamiento. Se observa que la función ajustada sigue de cerca la tendencia de los datos, lo que indica un buen ajuste en el conjunto de entrenamiento.
-
-![validation](../../outs/exercise_02/validation_regression_plot.png)
-
-En la segunda gráfica se muestra la función aprendida frente a los puntos reales en el conjunto de validación. La función ajustada también sigue de cerca la tendencia de los datos de validación, lo que sugiere que el modelo generaliza bien a datos no vistos durante el entrenamiento.
-
-![test](../../outs/exercise_02/test_regression_plot.png)
-
-En la tercera gráfica se muestra la función aprendida frente a los puntos reales en el conjunto de test. La función ajustada sigue de cerca la tendencia de los datos de test, lo que confirma que el modelo generaliza adecuadamente a nuevos datos.
-
-### Comparación de predicciones vs valores reales
-
-![train_points](../../outs/exercise_02/train_data_points_plot.png)
-
-La gráfica de puntos del conjunto de entrenamiento muestra la relación entre los valores predichos y los valores reales. Los puntos cercanos a la diagonal indican predicciones precisas, mientras que una dispersión mayor sugeriría errores de predicción más significativos.
-
-![validation_points](../../outs/exercise_02/validation_data_points_plot.png)
-
-La gráfica de puntos del conjunto de validación permite evaluar la precisión del modelo en datos no vistos durante el entrenamiento. La distribución de puntos alrededor de la diagonal confirma que el modelo generaliza correctamente.
-
-![test_points](../../outs/exercise_02/test_data_points_plot.png)
-
-La gráfica de puntos del conjunto de test proporciona una evaluación final del desempeño del modelo. La concentración de puntos en la diagonal indica que el modelo realiza predicciones fiables en datos completamente nuevos.
+**Resumen de métricas:**
+Esta imagen resume el MSE (error cuadrático medio) en cada partición. Si los valores son similares, el modelo generaliza bien y no está sobreajustado.
+![metrics](../../outs/exercise_02/metrics.png)
 
 ### Interpretación de resultados
 
