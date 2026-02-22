@@ -168,3 +168,11 @@ cython_debug/
 # Custom Files
 # outs/
 *.mat
+
+# Ignorar archivos grandes y binarios
+/data/ecg/cut_pub_4sec.zip*
+/data/ecg/*.zip*
+/data/ecg/*.mat
+outs/
+*.pth
+*.npz
