@@ -95,7 +95,7 @@ def train_model(output_folder: Path, device: torch.device):
     num_epochs = 100
 
     best_val_loss = float("inf")
-    best_model_path = output_folder / "best_model.pth"
+    best_model_path = output_folder / "best_model_mlp.pth"
 
     train_losses = []
     val_losses = []
@@ -164,7 +164,8 @@ def train_model(output_folder: Path, device: torch.device):
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
 
-    plt.savefig(output_folder / "loss_plot.png")
+    plt.title("MLP Model - Training and Validation Loss")
+    plt.savefig(output_folder / "loss_plot_mlp.png")
 
 
 if __name__ == "__main__":
@@ -175,4 +176,5 @@ if __name__ == "__main__":
     device = get_device("auto")
     print("Using device:", device)
 
+    print("Entrenando modelo MLP y guardando en:", output_folder / "best_model_mlp.pth")
     train_model(output_folder, device)

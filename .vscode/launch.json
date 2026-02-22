@@ -19,53 +19,67 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_06.dataset",
+            "name": "exercise_07.dataset",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.exercise_06.dataset",
+            "module": "src.exercise_07.dataset",
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_06.trainMLP",
+            "name": "exercise_07.train",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.exercise_06.trainMLP",
+            "module": "src.exercise_07.train",
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_06.trainCNN",
+            "name": "exercise_07.trainMLP",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.exercise_06.trainCNN",
+            "module": "src.exercise_07.trainMLP",
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_06.model",
+            "name": "exercise_07.trainCNN",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.exercise_06.model",
+            "module": "src.exercise_07.trainCNN",
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_06.evaluate",
+            "name": "exercise_07.model",
             "type": "debugpy",
             "request": "launch",
-            "module": "src.exercise_06.evaluate",
+            "module": "src.exercise_07.model",
             "console": "integratedTerminal"
         },
         {
-            "name": "exercise_06: Full Pipeline Script",
+            "name": "exercise_07.evaluate",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/src/exercise_06/run_pipeline.py",
+            "module": "src.exercise_07.evaluate",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "exercise_07: Full Pipeline Script",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/exercise_07/run_pipeline.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "exercise_07: Compare Models Script",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/exercise_07/compare_models.py",
             "console": "integratedTerminal"
         }
     ],
     "compounds": [
         {
-            "name": "exercise_06: Full Pipeline (Sequential)",
+            "name": "exercise_07: Full Pipeline (Sequential)",
             "configurations": [
-                "exercise_06: Full Pipeline Script"
+                "exercise_07: Full Pipeline Script"
             ]
         }
     ]

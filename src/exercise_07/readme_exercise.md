@@ -1,145 +1,34 @@
+# Ejercicio 7: Clasificación de ECG con LSTM
 
-# Exercise 1: Create a Deep Learning Model for defibrillation detection from ECG in PyTorch 
-## Objective
+En este ejercicio hemos trabajado con señales de ECG para clasificarlas en dos categorías: shockable y not_shockable. El objetivo principal ha sido implementar y entrenar una red neuronal basada en LSTM, adaptando el flujo de trabajo de ejercicios anteriores pero centrándonos únicamente en este tipo de modelo recurrente, que es especialmente adecuado para secuencias temporales como las señales cardíacas.
 
-Develop a model that can classify deffibrillation from ECG
+## Preparación y preprocesado
 
-First, please, unzip the file data/ecg/cut_pub_4sec.zip and add it to git LFS:
-git lfs track data/ecg/**
+Comenzamos cargando el dataset de ECG, que ya habíamos utilizado en ejercicios previos. El preprocesado ha consistido en normalizar las señales usando únicamente los datos de entrenamiento, asegurando así que la información del test no contamine el proceso de aprendizaje. La normalización se ha guardado para poder aplicarla también en la fase de evaluación. El dataset se ha dividido en entrenamiento, validación y test, manteniendo la coherencia con la metodología de los ejercicios anteriores.
 
-Try to create a model that can classify deffibrillation from ECG but using LSTM or GRU and their combinations with CNNs.
+## Arquitectura y entrenamiento del modelo
 
+Para este ejercicio hemos optado por una arquitectura LSTM sencilla, con dos capas y un tamaño de estado oculto de 16. La entrada al modelo es la señal de ECG normalizada, que se adapta a la forma esperada por la LSTM (batch, secuencia, 1). El entrenamiento se ha realizado durante 100 épocas, utilizando Adam como optimizador y MSE como función de pérdida, igual que en los modelos anteriores para mantener la comparabilidad. El modelo se ha entrenado en GPU si estaba disponible, acelerando así el proceso.
 
-Which are the conclussions?
+Durante el entrenamiento, se ha monitorizado la pérdida tanto en entrenamiento como en validación. En la siguiente imagen se puede observar la evolución de ambas curvas, donde se aprecia cómo el modelo va mejorando y ajustándose a los datos:
 
-## Task Formalization
+![Curva de pérdida LSTM](../../outs/exercise_07/loss_plot_lstm.png)
 
-Write your answer here
+La gráfica muestra una disminución progresiva de la pérdida, aunque en algunas ocasiones se observan pequeñas oscilaciones, típicas en este tipo de modelos y conjuntos de datos.
 
-### Task Formalization (Inference)
+## Evaluación y resultados
 
-Write your answer here
-### Task Formalization (Training)
+Una vez finalizado el entrenamiento, se ha evaluado el modelo tanto en el conjunto de entrenamiento como en el de test. Para ello, se han calculado métricas como la accuracy, precisión, recall y F1-score, que permiten valorar el rendimiento global del modelo. Los resultados obtenidos se resumen en la siguiente imagen:
 
-Write your answer here
+![Métricas LSTM](../../outs/exercise_07/metrics.png)
 
-## Evaluation metrics
+El modelo logra una precisión razonable. Sin embargo, el F1-score y recall varían según la distribución de clases, lo cual es común en clasificación binaria desbalanceada.
 
-Write your answer here
+Además, se ha generado la matriz de confusión para analizar en detalle los aciertos y errores del modelo. A continuación se muestra la matriz correspondiente al conjunto de test:
 
-## Data Considerations
+![Matriz de confusión test](../../outs/exercise_07/test_confusion_matrix.png)
 
-### Dataset description
+En la matriz se puede ver que el modelo tiende a acertar más en una de las clases, lo que sugiere que podría beneficiarse de técnicas adicionales como el balanceo de clases o el ajuste de hiperparámetros. Aun así, el rendimiento es satisfactorio para una primera aproximación con LSTM.
 
-Write your answer here
-
-### Data preparation and preprocessing
-
-Write your answer here
-
-### Data augmentation
-
-Write your answer here
-
-## Model Considerations
-
-Write your answer here
-
-### Suitable Loss Functions
-
-Write your answer here
-
-### Selected Loss Function
-
-Write your answer here
-
-### Possible architectures
-
-Write your answer here
-
-### Last layer activation
-
-Write your answer here
-
-### Other Considerations
-
-Write your answer here
-
-## Training
-
-Write your answer here
-
-### Training hyperparameters
-
-Write your answer here
-
-### Loss function graph
-
-![image](../../outs/exercise_03/loss_plot.png)
-
-### Discussion of the training process
-
-Write your answer here
-
-## Evaluation
-
-### Evaluation metrics
-
-Write your answer here
-
-![image](../../outs/exercise_03//train_regression_plot.png)
-
-![image](../../outs/exercise_03//validation_regression_plot.png)
-
-![image](../../outs/exercise_03/test_regression_plot.png)
-
-Metrics for each dataset is depicted: 
-
-![image](../../outs/exercise_03/metrics.png)
-
-### Evaluation results
-
-Here you have examples of evaluation results for train, validation and test sets.
-
-Example for train set:
-
-![image](../../outs/exercise_03/train_data_points_plot.png)
-
-
-Example for validation set:
-
-![image](../../outs/exercise_03/validation_data_points_plot.png)
-
-
-Example for test set:
-
-![image](../../outs/exercise_03/test_data_points_plot.png)
-
-
-### Discussion of the results
-
-How the model solves the problem?
-Is there overfitting, underfitting or any other issues? 
-How can we improve the model?
-How this model will generalize to new data?
-
-## Design Feedback loops
-
-Describe the process you have followed to improve the model and the evolution of performance of the model during the process.
-
-You can include a table stating the chanched parameters and the obtained results after the process.
-
-
-## Questions
-
-Pleaser answer the following questions. Include graphs if necessary. Store the graphs in the `outs/exercise_03` folder.
-
-### Which are the differences you found between previous model and this one?
-
-### Does the model generalizes well to new data?
-
-
-
-
-
-
+## Conclusiones
+El uso de LSTM para la clasificación de señales de ECG ha resultado efectivo, permitiendo capturar la información temporal de las señales. El proceso ha seguido la misma estructura que en ejercicios anteriores, pero adaptando la arquitectura y el preprocesado a las necesidades de las redes recurrentes. El flujo de trabajo ha consistido en una serie de ensayos de prueba y error, a modo heurístico, lo que ha facilitado la exploración de diferentes configuraciones. El análisis de las métricas y las gráficas generadas nos ha permitido entender mejor el comportamiento del modelo y sus posibles mejoras futuras.
